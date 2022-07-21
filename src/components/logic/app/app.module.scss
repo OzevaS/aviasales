@@ -1,0 +1,90 @@
+@import '../../../index.scss';
+
+body {
+  background: #f3f7fa;
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.aviasales-app {
+  max-width: 754px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+
+.aviasales-app__logo {
+  display: block;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  object-fit: cover;
+}
+
+.aviasales-app__logo img {
+  width: 100%;
+  height: 100%;
+}
+
+.aviasales-app__header {
+  padding: 50px 0;
+}
+
+.aviasales-app__container {
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.aviasales-app__sidebar {
+  align-self: flex-start;
+  max-width: 232px;
+  background: #ffffff;
+  border-radius: 4px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  @media screen and (max-width: 768px) {
+    margin: 0 auto;
+    max-width: none;
+    min-width: 350px;
+    margin-bottom: 20px;
+  }
+
+  @media screen and (max-width: 576px) {
+    min-width: 250px;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.aviasales-app__content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  min-width: 542px;
+  padding: 0 20px;
+
+  @media screen and (max-width: 768px) {
+    margin: 0 auto;
+    min-width: auto;
+  }
+}
+
+.aviasales-app__button-next {
+  @include blue-button;
+}

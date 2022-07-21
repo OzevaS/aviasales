@@ -1,0 +1,60 @@
+.toggle-menu {
+  display: flex;
+  font-size: 1rem;
+
+  & label,
+  &__title {
+    margin: 0;
+  }
+
+  & .container:first-of-type {
+    border-radius: 5px 0 0 5px;
+  }
+
+  & .container:last-of-type {
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: white;
+  border: 1px solid #dfe5ec;
+  padding: 20px;
+  width: 33.3333333%;
+  cursor: pointer;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.75em;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #4a4a4a;
+
+  @media screen and (max-width: 576px) {
+    font-size: 0.7rem;
+  }
+
+  & input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  & input:checked {
+    & {
+      background-color: #2196f3;
+    }
+  }
+}
+
+.container--checked {
+  background-color: #2196f3;
+  color: #ffffff;
+}

@@ -1,0 +1,28 @@
+body {
+  background: #e5e5e5;
+  font-family: 'Open Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@mixin blue-button {
+  height: 50px;
+  background: white;
+  background: #2196f3;
+  border: none;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+
+  @media screen and (max-width: 576px) {
+    font-size: 0.7rem;
+  }
+}
