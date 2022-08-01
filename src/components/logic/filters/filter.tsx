@@ -32,10 +32,11 @@ const Filter: React.FC<IFiltersProps> = (props) => {
     onChange(type, items[+index].value);
   };
 
+  const filter = getFilterFromType(filters, type);
+  
   const itemsElement = items.map((item, index) => {
     const { label, value } = item;
     let checked = false;
-    const filter = getFilterFromType(filters, type);
     if (filter.includes(value)) {
       checked = true;
     }

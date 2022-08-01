@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { FC, useMemo } from 'react';
 
 import { ITicket } from '../../../types';
@@ -13,8 +14,8 @@ const TicketList: FC<TicketListProps> = ({ tickets }) => {
   const ticketsItems = useMemo(
     () =>
       tickets
-        ? tickets.map((ticket) => {
-            return <Ticket key={ticket.id} ticket={ticket} />;
+        ? tickets.map((ticket, index) => {
+            return <Ticket key={index} ticket={ticket} id={index}/>;
           })
         : null,
     [tickets]

@@ -1,4 +1,11 @@
-import { changeTickets, ITicketsAction, TypeTicketsAction } from './tickets-actions';
+import {
+  REQUEST_TICKETS,
+  requestTickets,
+  RECEIVE_TICKETS,
+  receiveTickets,
+  DID_INVALIDATE,
+  didInvalidateTickets,
+  fetchTickets,
+} from './tickets-actions';
 
-export type { ITicketsAction, TypeTicketsAction };
-export default changeTickets;
+export { requestTickets, receiveTickets, didInvalidateTickets, fetchTickets };

@@ -1,14 +1,17 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import ErrorBoundary from 'antd/lib/alert/ErrorBoundary';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import AviasalesService from '../../../services/aviasales-service';
-import { EFilterStop, ITicket, ESort, TypeFilter } from '../../../types';
+import { EFilterStop, ITicket, ESort } from '../../../types';
 import TicketList from '../ticket-list';
 import Filter from '../filters';
-import ToggleMenu from '../toggle-menu';
+import SortMenu from '../sort-menu';
+import { IStateReducer } from '../../../reducers';
+import * as actionTickets from '../../../actions/tickets-actions';
 
 import 'antd/dist/antd.css';
 import classNames from './app.module.scss';
@@ -53,34 +56,39 @@ const toggleItems = [
 
 const AviasaleServiceContext = React.createContext<AviasalesService>(null as any);
 
-interface IAppState {
+interface IAppProps {
   tickets: ITicket[];
+  fetchTickets: () => void;
 }
 
-const App = () => {
-  const aviasaleService = useMemo(() => new AviasalesService(), []);
+const aviasalesService = new AviasalesService();
 
-  const [tickets, setTickets] = useState<IAppState['tickets']>([]);
+const App: FC<IAppProps> = ({ tickets, fetchTickets }) => {
+  const [serviceLoaded, setServiceLoaded] = React.useState(false);
+
+  const timer = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    aviasaleService.getTickets('', '', '').then(setTickets);
-  }, [aviasaleService]);
+    timer.current = setTimeout(() => fetchTickets(), 5000);
 
-  
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [fetchTickets]);
 
   return (
     <ErrorBoundary>
-      <AviasaleServiceContext.Provider value={aviasaleService}>
+      <AviasaleServiceContext.Provider value={aviasalesService}>
         <section className={classNames['aviasales-app']}>
           <header className={classNames['aviasales-app__header']}>
             <img className={classNames['aviasales-app__logo']} src="./plane.svg" alt="Aviasales" />
           </header>
           <div className={classNames['aviasales-app__container']}>
             <div className={classNames['aviasales-app__sidebar']}>
-              <Filter type='STOP' title="Количество пересадок" items={filterItems} />
+              <Filter type="STOP" title="Количество пересадок" items={filterItems} />
             </div>
             <div className={classNames['aviasales-app__content']}>
-              <ToggleMenu items={toggleItems} />
+              <SortMenu items={toggleItems} />
               <TicketList tickets={tickets} />
               <button className={classNames['aviasales-app__button-next']}>Показать еще</button>
             </div>
@@ -91,4 +99,20 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state: IStateReducer) => {
+  const { tickets } = state;
+  return {
+    tickets: tickets.items,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators(
+    {
+      fetchTickets: actionTickets.fetchTickets,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

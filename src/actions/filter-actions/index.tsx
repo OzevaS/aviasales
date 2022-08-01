@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { changeFilters, IFilterAction, TypeFilterAction } from './filter-acitons';
+import { changeFilters, IFilterAction, TypeFilterValue } from './filter-acitons';
 
-export type { IFilterAction, TypeFilterAction };
+export type { IFilterAction, TypeFilterValue as TypeFilterAction };
 export { changeFilters };

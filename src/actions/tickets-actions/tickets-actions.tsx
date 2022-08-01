@@ -1,24 +1,55 @@
+import AviasalesService from '../../services';
+
 /* eslint-disable import/prefer-default-export */
-import { ITicket } from '../../types';
+const aviasalesService = new AviasalesService();
 
-export type TypeTicketsAction = 'SET_TICKETS';
+export const REQUEST_TICKETS = 'REQUEST_TICKETS';
 
-export interface ITicketsAction {
-  type: string;
-  payload: {
-    type: TypeTicketsAction;
-    payload: Array<ITicket>;
-  };
-}
-
-const changeTickets = (tickets: Array<ITicket>): ITicketsAction => {
+export const requestTickets = () => {
   return {
     type: 'TICKETS',
     payload: {
-      type: 'SET_TICKETS',
-      payload: tickets,
+      type: REQUEST_TICKETS,
     },
   };
 };
 
-export { changeTickets };
+export const RECEIVE_TICKETS = 'RECEIVE_TICKETS';
+
+export const receiveTickets = (data: any) => {
+  return {
+    type: 'TICKETS',
+    payload: {
+      type: RECEIVE_TICKETS,
+      tickets: data.tickets,
+      stop: data.stop,
+    },
+  };
+};
+
+export const DID_INVALIDATE = 'DIDINVALIDATE';
+
+export const didInvalidateTickets = () => {
+  return {
+    type: 'TICKETS',
+    payload: {
+      type: DID_INVALIDATE,
+    },
+  };
+};
+
+export const fetchTickets = () => {
+  return (dispatch: any) => {
+    dispatch(requestTickets());
+    return aviasalesService
+      .getTickets()
+      .then((body) => {
+        console.log('body', body);
+        dispatch(receiveTickets(body));
+      })
+      .catch((error) => {
+        console.log(error);
+        didInvalidateTickets();
+      });
+  };
+};

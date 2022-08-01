@@ -3,13 +3,13 @@ import { ESort } from '../../types';
 
 export interface ISortAction {
   type: string;
-  payload: ESort;
+  value: ESort;
 }
 
-const changeSort = (filter: ESort): ISortAction => {
+const changeSort = (value: ESort): ISortAction => {
   return {
     type: 'SORT',
-    payload: filter,
+    value,
   };
 };
 

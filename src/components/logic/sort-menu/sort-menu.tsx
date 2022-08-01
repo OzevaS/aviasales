@@ -7,10 +7,9 @@ import { bindActionCreators } from 'redux';
 
 import * as actions from '../../../actions/sort-actions';
 import { IStateReducer } from '../../../reducers';
-import { ISortState } from '../../../reducers/sort-reducer';
 import { ESort } from '../../../types';
 
-import classNames from './toggle-menu.module.scss';
+import classNames from './sort-menu.module.scss';
 
 interface ToggleMenuProps {
   items: {
@@ -21,7 +20,7 @@ interface ToggleMenuProps {
   selected: any;
 }
 
-const ToggleMenu: FC<ToggleMenuProps> = (props) => {
+const SortMenu: FC<ToggleMenuProps> = (props) => {
   const { items, onChange, selected } = props;
 
   const handleChange: ChangeEventHandler = (event) => {
@@ -52,9 +51,9 @@ const ToggleMenu: FC<ToggleMenuProps> = (props) => {
 };
 
 const mapStateToProps = (state: IStateReducer) => {
-  const { sorts } = state;
+  const { sort } = state;
   return {
-    selected: sorts.price_time,
+    selected: sort.value,
   };
 };
 
@@ -65,4 +64,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToggleMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(SortMenu);

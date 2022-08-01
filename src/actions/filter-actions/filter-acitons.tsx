@@ -1,22 +1,22 @@
 /* eslint-disable import/prefer-default-export */
 import { EFilterStop, TypeFilter } from '../../types';
 
-export type TypeFilterAction = EFilterStop;
+export type TypeFilterValue = EFilterStop;
 
 export interface IFilterAction {
   type: string;
   payload: {
-    type: TypeFilter;
-    payload: TypeFilterAction;
+    typeFilter: TypeFilter;
+    valueFilter: TypeFilterValue;
   };
 }
 
-const changeFilters = (type: TypeFilter, filter: TypeFilterAction): IFilterAction => {
+const changeFilters = (typeFilter: TypeFilter, filter: TypeFilterValue): IFilterAction => {
   return {
     type: 'FILTER',
     payload: {
-      type,
-      payload: filter,
+      typeFilter,
+      valueFilter: filter,
     },
   };
 };
