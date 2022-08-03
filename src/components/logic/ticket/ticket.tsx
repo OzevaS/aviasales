@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import { addSeconds } from 'date-fns';
 
-import { ITicket } from '../../../types';
+import { ITicket } from '../../../types/ticket';
 
 import classNames from './ticket.module.scss';
 
@@ -33,14 +33,14 @@ interface TicketProps {
   id: number;
 }
 
-const Ticket: FC<TicketProps> = (props) => {
+const Ticket: FC<TicketProps> = React.memo((props) => {
   const { ticket, id } = props;
   const { price, carrier, segments } = ticket;
   const { origin, destination, date, duration, stops } = segments[0];
   const { origin: origin2, destination: destination2, date: date2, duration: duration2, stops: stops2 } = segments[1];
 
   return (
-    <li className={classNames.ticket}>
+    <li className={classNames.ticket} key={id}>
       <div className={classNames.ticket__header}>
         <h3 className={classNames.ticket__price}>{price}</h3>
         <h3 className={classNames.ticket__company}>{carrier}</h3>
@@ -49,7 +49,7 @@ const Ticket: FC<TicketProps> = (props) => {
       <SegmentInfo origin={origin2} destination={destination2} date={date2} duration={duration2} stops={stops2} />
     </li>
   );
-};
+});
 
 interface SegmentInfoProps {
   origin: string;
@@ -65,7 +65,9 @@ const SegmentInfo: FC<SegmentInfoProps> = (props) => {
   return (
     <div className={classNames.ticket__body}>
       <div className={classNames.ticket__date}>
-        <p className={classNames.ticket__description}>{origin}-{destination}</p>
+        <p className={classNames.ticket__description}>
+          {origin}-{destination}
+        </p>
         {getFormatTime(date, duration)}
       </div>
       <div className={classNames.ticket__time}>

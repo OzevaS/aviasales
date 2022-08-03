@@ -7,16 +7,16 @@
     margin: 0;
   }
 
-  & .container:first-of-type {
+  & .button:first-of-type {
     border-radius: 5px 0 0 5px;
   }
 
-  & .container:last-of-type {
+  & .button:last-of-type {
     border-radius: 0 5px 5px 0;
   }
 }
 
-.container {
+.button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +27,7 @@
   width: 33.3333333%;
   cursor: pointer;
 
+  text-align: center;
   font-style: normal;
   font-weight: 600;
   font-size: 0.75em;
@@ -54,7 +55,7 @@
   }
 }
 
-.container--checked {
+.button--checked {
   background-color: #2196f3;
   color: #ffffff;
 }

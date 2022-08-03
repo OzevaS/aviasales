@@ -1,3 +1,3 @@
-import SortMenu from './sort-menu';
+import SortPriceMenu from './sortPriceMenu';
 
-export default SortMenu;
+export default SortPriceMenu;

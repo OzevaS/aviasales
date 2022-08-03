@@ -1,3 +1,3 @@
-import Filter from './filter';
+import FilterStops from './filterStops';
 
-export default Filter;
+export default FilterStops;
