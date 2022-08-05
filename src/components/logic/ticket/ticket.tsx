@@ -43,7 +43,7 @@ const Ticket: FC<TicketProps> = React.memo((props) => {
     <li className={classNames.ticket} key={id}>
       <div className={classNames.ticket__header}>
         <h3 className={classNames.ticket__price}>{price}</h3>
-        <h3 className={classNames.ticket__company}>{carrier}</h3>
+        <img className={classNames.ticket__carrier} src={`https://pics.avs.io/99/36/${carrier}.png`} alt={carrier} />
       </div>
       <SegmentInfo origin={origin} destination={destination} date={date} duration={duration} stops={stops} />
       <SegmentInfo origin={origin2} destination={destination2} date={date2} duration={duration2} stops={stops2} />

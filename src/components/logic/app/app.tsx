@@ -1,7 +1,7 @@
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react/button-has-type */
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import ErrorBoundary from 'antd/lib/alert/ErrorBoundary';
 
 import { useAppSelector } from '../../../hooks/useAppSelector';
@@ -9,7 +9,12 @@ import { FilterStopsTypes } from '../../../types/filter';
 import FilterStops from '../filters';
 import SortPriceMenu from '../sort-menu';
 import { SortPriceTypes } from '../../../types/sort';
-import TicketListWithFilterAndSort from '../../../hoc/hoc-components/TicketListWithFilterAndSort';
+import { useActions } from '../../../hooks/useActions';
+import { useTicketFilter } from '../../../hooks/useTicketFilter';
+import { useTicketSort } from '../../../hooks/useTicketSort';
+import TicketListWithData from '../../../hoc/hoc-components/ticketListWithData';
+import { IDataState } from '../../../hoc/hoc-helpers/withStateData';
+import { ITicket } from '../../../types/ticket';
 
 import 'antd/dist/antd.css';
 import classNames from './app.module.scss';
@@ -37,7 +42,7 @@ const filterItems = [
   },
 ];
 
-const toggleItems = [
+const sortItems = [
   {
     label: 'Самый дешевый',
     value: SortPriceTypes.CHEAPEST,
@@ -53,7 +58,32 @@ const toggleItems = [
 ];
 
 const App: FC = () => {
-  const { tickets } = useAppSelector((state) => state.tickets);
+  const { searchId, tickets, limit, loading, error } = useAppSelector((state) => state.tickets);
+  const { fetchTickets, getSearchId, setTicketsLimit } = useActions();
+
+  useEffect(() => {
+    getSearchId();
+  }, []);
+
+  useEffect(() => {
+    if (searchId) {
+      fetchTickets();
+    }
+  }, [searchId]);
+
+  const ticketsFilteredAndSorted = useTicketSort(useTicketFilter(tickets)).slice(0, limit);
+
+  let ticketsView: ITicket[] | null = ticketsFilteredAndSorted;
+  if (tickets.length === 0) {
+    ticketsView = null;
+  }
+
+  const dataStateTickets: IDataState = {
+    data: ticketsView,
+    error,
+    loading,
+    hasNotDataMessage: 'Рейсов, подходящих под заданные фильтры, не найдено',
+  };
 
   return (
     <ErrorBoundary>
@@ -66,9 +96,16 @@ const App: FC = () => {
             <FilterStops title="Количество пересадок" items={filterItems} />
           </div>
           <div className={classNames['aviasales-app__content']}>
-            <SortPriceMenu items={toggleItems} />
-            <TicketListWithFilterAndSort tickets={tickets} />
-            <button className={classNames['aviasales-app__button-next']}>Показать еще</button>
+            <SortPriceMenu items={sortItems} />
+            <TicketListWithData {...dataStateTickets} />
+            <button
+              onClick={() => {
+                setTicketsLimit(limit + 5);
+              }}
+              className={classNames['aviasales-app__button-next']}
+            >
+              Показать еще
+            </button>
           </div>
         </div>
       </section>

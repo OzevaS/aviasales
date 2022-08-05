@@ -1,49 +1,67 @@
 export interface ResponseTickets {
   data: {
-    tickets: Array<ITicket>;
+    tickets: ITicket[];
     stop: boolean;
   };
 }
 
 export interface TicketsState {
-  tickets: Array<ITicket>;
-  tickets_view: Array<ITicket>;
+  limit: number;
+  searchId: string;
+  tickets: ITicket[];
+  stop: boolean;
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 export enum TicketsActionTypes {
+  GET_SEARCH_ID = 'GET_SEARCH_ID',
   FETCH_TICKETS = 'FETCH_TICKETS',
   FETCH_TICKETS_SUCESS = 'FETCH_TICKETS_SUCESS',
   FETCH_TICKETS_ERROR = 'FETCH_TICKETS_ERROR',
   SET_TICKETS_VIEW = 'SET_TICKETS_VIEW',
+  SET_TICKETS_LIMIT = 'SET_TICKETS_LIMIT',
+}
+
+export interface GetSearchIdAction {
+  type: TicketsActionTypes.GET_SEARCH_ID;
+  payload: string;
 }
 
 export interface FetchTicketsAction {
   type: TicketsActionTypes.FETCH_TICKETS;
-  payload: Array<ITicket>;
 }
 
 export interface FetchTicketsErrorAction {
   type: TicketsActionTypes.FETCH_TICKETS_ERROR;
-  payload: string;
+  payload: Error;
 }
 
 export interface FetchTicketsSuccessAction {
   type: TicketsActionTypes.FETCH_TICKETS_SUCESS;
-  payload: Array<ITicket>;
+  payload: {
+    tickets: ITicket[];
+    stop: boolean;
+  };
 }
 
 export interface SetTicketsViewAction {
   type: TicketsActionTypes.SET_TICKETS_VIEW;
-  payload: Array<ITicket>;
+  payload: ITicket[];
+}
+
+export interface SetTicketsLimitAction {
+  type: TicketsActionTypes.SET_TICKETS_LIMIT;
+  payload: number;
 }
 
 export type TicketsAction =
+  | GetSearchIdAction
   | FetchTicketsAction
   | FetchTicketsErrorAction
   | FetchTicketsSuccessAction
-  | SetTicketsViewAction;
+  | SetTicketsViewAction
+  | SetTicketsLimitAction;
 
 export interface ITicket {
   stops: number;

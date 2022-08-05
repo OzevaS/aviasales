@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 
 import { useActions } from '../../../hooks/useActions';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { FilterActionTypes, FilterStopsTypes, FilterTypes } from '../../../types/filter';
+import { FilterStopsTypes, FilterTypes } from '../../../types/filter';
 
 import classNames from './filter.module.scss';
 

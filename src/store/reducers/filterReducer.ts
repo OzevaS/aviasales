@@ -2,7 +2,7 @@
 import { FilterState, FilterAction, FilterActionTypes, FilterStopsTypes } from '../../types/filter';
 
 export const initialState: FilterState = {
-  stops: [],
+  stops: [...Object.keys(FilterStopsTypes).map((key) => key as FilterStopsTypes)],
 };
 
 export const filterReducer = (state: FilterState = initialState, action: FilterAction): FilterState => {
@@ -10,7 +10,7 @@ export const filterReducer = (state: FilterState = initialState, action: FilterA
 
   switch (action.type) {
     case FilterActionTypes.ADD_FILTER_STOP:
-      if (action.payload === FilterStopsTypes.ALL)
+      if (action.payload === FilterStopsTypes.ALL || stops.length === Object.keys(FilterStopsTypes).length - 2)
         return {
           ...state,
           stops: [...Object.keys(FilterStopsTypes).map((key) => key as FilterStopsTypes)],

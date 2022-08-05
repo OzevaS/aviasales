@@ -7,18 +7,18 @@ import Ticket from '../ticket';
 import classNames from './ticket-list.module.scss';
 
 interface TicketListProps {
-  tickets: ITicket[];
+  data: ITicket[];
 }
 
-const TicketList: FC<TicketListProps> = ({ tickets }) => {
+const TicketList: FC<TicketListProps> = ({ data }) => {
   const ticketsItems = useMemo(
     () =>
-      tickets
-        ? tickets.map((ticket, index) => {
+      data
+        ? data.map((ticket, index) => {
             return <Ticket key={index} ticket={ticket} id={index} />;
           })
         : null,
-    [tickets]
+    [data]
   );
 
   return <ul className={classNames['ticket-list']}>{ticketsItems}</ul>;

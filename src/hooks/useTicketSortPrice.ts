@@ -5,7 +5,7 @@ import { ITicket } from '../types/ticket';
 
 import { useAppSelector } from './useAppSelector';
 
-export const useTicketSortPrice = (tickets: ITicket[]): { sortedTickets: ITicket[] } => {
+export const useTicketSortPrice = (tickets: ITicket[]): ITicket[] => {
   const { price } = useAppSelector((state) => state.sort);
 
   const sortedTickets = useMemo(() => {
@@ -25,5 +25,5 @@ export const useTicketSortPrice = (tickets: ITicket[]): { sortedTickets: ITicket
     }
   }, [price, tickets]);
 
-  return { sortedTickets };
+  return sortedTickets;
 };

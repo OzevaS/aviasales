@@ -5,7 +5,11 @@ import { ITicket } from '../types/ticket';
 
 import { useAppSelector } from './useAppSelector';
 
-export const useTicketFilterStops = (tickets: ITicket[]): { filteredTickets: ITicket[] } => {
+const getCountTicketStops = (ticket: ITicket): number => {
+  return ticket.segments.reduce((acc, segment) => acc + segment.stops.length, 0);
+};
+
+export const useTicketFilterStops = (tickets: ITicket[]): ITicket[] => {
   const { stops } = useAppSelector((state) => state.filter);
 
   const filteredTickets = useMemo(() => {
@@ -15,20 +19,44 @@ export const useTicketFilterStops = (tickets: ITicket[]): { filteredTickets: ITi
       return tickets;
     }
     if (stops.includes(FilterStopsTypes.STOPS_NONE)) {
-      result = [...result, ...tickets.filter((ticket) => ticket.stops === 0)];
+      result = [
+        ...result,
+        ...tickets.filter((ticket) => {
+          const stopsCount = getCountTicketStops(ticket);
+          return stopsCount === 0;
+        }),
+      ];
     }
     if (stops.includes(FilterStopsTypes.STOPS_ONE)) {
-      result = [...result, ...tickets.filter((ticket) => ticket.stops === 1)];
+      result = [
+        ...result,
+        ...tickets.filter((ticket) => {
+          const stopsCount = getCountTicketStops(ticket);
+          return stopsCount === 1;
+        }),
+      ];
     }
     if (stops.includes(FilterStopsTypes.STOPS_TWO)) {
-      result = [...result, ...tickets.filter((ticket) => ticket.stops === 2)];
+      result = [
+        ...result,
+        ...tickets.filter((ticket) => {
+          const stopsCount = getCountTicketStops(ticket);
+          return stopsCount === 2;
+        }),
+      ];
     }
     if (stops.includes(FilterStopsTypes.STOPS_THREE)) {
-      result = [...result, ...tickets.filter((ticket) => ticket.stops === 3)];
+      result = [
+        ...result,
+        ...tickets.filter((ticket) => {
+          const stopsCount = getCountTicketStops(ticket);
+          return stopsCount === 3;
+        }),
+      ];
     }
 
     return result;
   }, [stops, tickets]);
 
-  return { filteredTickets };
+  return filteredTickets;
 };
