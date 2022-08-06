@@ -8,9 +8,10 @@ import classNames from './ticket-list.module.scss';
 
 interface TicketListProps {
   data: ITicket[];
+  style: React.CSSProperties | undefined;
 }
 
-const TicketList: FC<TicketListProps> = ({ data }) => {
+const TicketList: FC<TicketListProps> = ({ data, style }) => {
   const ticketsItems = useMemo(
     () =>
       data
@@ -21,7 +22,7 @@ const TicketList: FC<TicketListProps> = ({ data }) => {
     [data]
   );
 
-  return <ul className={classNames['ticket-list']}>{ticketsItems}</ul>;
+  return <ul style={style} className={classNames['ticket-list']}>{ticketsItems}</ul>;
 };
 
 export default TicketList;

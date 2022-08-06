@@ -14,15 +14,19 @@ const withStateData = (View: React.ElementType) => {
 
     const hasData = data && data.length > 0;
     const hasNotData = !error && !loading && data && data.length === 0;
-    const hasError = error && !loading && data && data.length === 0;
-    const hasLoading = loading && !data;
+
+    let styleView = {};
+    if (loading)
+      styleView = {
+        opacity: 0.6,
+      };
 
     return (
       <>
-        {hasLoading && <Spin size="large" />}
-        {hasError && <Alert message="Error" description={error.message} type="error" showIcon />}
-        {hasData && <View data={data} />}
+        {loading && <Spin size="large" />}
+        {error && <Alert message="Error" description={error.message} type="error" showIcon />}
         {hasNotData && <Alert message={hasNotDataMessage} type="warning" showIcon />}
+        {hasData && <View data={data} style={styleView} />}
       </>
     );
   };

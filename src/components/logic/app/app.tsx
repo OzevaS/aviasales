@@ -58,7 +58,7 @@ const sortItems = [
 ];
 
 const App: FC = () => {
-  const { searchId, tickets, limit, loading, error } = useAppSelector((state) => state.tickets);
+  const { searchId, tickets, limit, loading, error, stop } = useAppSelector((state) => state.tickets);
   const { fetchTickets, getSearchId, setTicketsLimit } = useActions();
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const App: FC = () => {
   const dataStateTickets: IDataState = {
     data: ticketsView,
     error,
-    loading,
+    loading: !stop,
     hasNotDataMessage: 'Рейсов, подходящих под заданные фильтры, не найдено',
   };
 
@@ -104,7 +104,7 @@ const App: FC = () => {
               }}
               className={classNames['aviasales-app__button-next']}
             >
-              Показать еще
+              Показать еще 5 билетов!
             </button>
           </div>
         </div>

@@ -4,7 +4,6 @@ import axios from 'axios';
 import { TicketsAction, TicketsActionTypes } from '../../types/ticket';
 import { RootState } from '../reducers';
 
-
 export const getSearchId = () => {
   return async (dispatch: Dispatch) => {
     const response = await axios.get('https://aviasales-test-api.kata.academy/search');
@@ -17,6 +16,8 @@ export const getSearchId = () => {
 
 export const fetchTickets = () => {
   return async (dispatch: Dispatch<TicketsAction>, getState: () => RootState) => {
+    const { countCatched } = getState().tickets;
+
     try {
       const { searchId } = getState().tickets;
       if (!searchId) {
@@ -27,46 +28,26 @@ export const fetchTickets = () => {
 
       const response = await axios.get(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`);
 
-      dispatch({ type: TicketsActionTypes.FETCH_TICKETS_SUCESS, payload: response.data });
+      dispatch({ type: TicketsActionTypes.FETCH_TICKETS_SUCCESS, payload: response.data });
 
       if (!response.data.stop) {
         setTimeout(() => {
           fetchTickets()(dispatch, getState);
         }, 0);
       }
-
     } catch (error: any) {
-      dispatch({
-        type: TicketsActionTypes.FETCH_TICKETS_ERROR,
-        payload: new Error(`Произошла ошибка при получении билетов: ${error.message}`),
-      });
+      if (countCatched < 5) {
+        fetchTickets()(dispatch, getState);
+        dispatch({ type: TicketsActionTypes.INCREMENT_COUNT_CATCHED });
+      } else {
+        dispatch({
+          type: TicketsActionTypes.FETCH_ALL_TICKETS_ERROR,
+          payload: new Error(`Не удалось получить все билеты: ${error.message}`),
+        });
+      }
     }
   };
 };
-
-// export const fetchAllTickets = () => {
-//   return async (dispatch: Dispatch<TicketsAction>, getState: () => RootState) => {
-//     try {
-//       const { stop } = getState().tickets;
-//       if (stop) {
-//         return;
-//       }
-
-//       await bindedFetchTickets();
-
-//       setTimeout(() => {
-//         console.log('Повторный запрос билетов');
-//         fetchAllTickets();
-//       }, 0);
-//     } catch (error: any) {
-//       dispatch({
-//         type: TicketsActionTypes.FETCH_TICKETS_ERROR,
-
-//         payload: new Error(`Произошла ошибка при получении билетов: ${error.message}`),
-//       });
-//     }
-//   };
-// };
 
 export const setTicketsLimit = (limit: number) => (dispatch: Dispatch) => {
   dispatch({ type: TicketsActionTypes.SET_TICKETS_LIMIT, payload: limit });

@@ -2,6 +2,7 @@ import { TicketsAction, TicketsActionTypes, TicketsState } from '../../types/tic
 
 export const initialState: TicketsState = {
   limit: 5,
+  countCatched: 0,
   searchId: '',
   tickets: [],
   stop: false,
@@ -21,13 +22,18 @@ export const ticketsReducer = (state: TicketsState = initialState, action: Ticke
         ...state,
         searchId: action.payload,
       };
+    case TicketsActionTypes.INCREMENT_COUNT_CATCHED:
+      return {
+        ...state,
+        countCatched: state.countCatched + 1,
+      };
     case TicketsActionTypes.FETCH_TICKETS:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case TicketsActionTypes.FETCH_TICKETS_SUCESS:
+    case TicketsActionTypes.FETCH_TICKETS_SUCCESS:
       return {
         ...state,
         tickets: state.tickets.slice(0).concat(action.payload.tickets),
@@ -35,11 +41,13 @@ export const ticketsReducer = (state: TicketsState = initialState, action: Ticke
         loading: false,
         error: null,
       };
-    case TicketsActionTypes.FETCH_TICKETS_ERROR:
+    case TicketsActionTypes.FETCH_ALL_TICKETS_ERROR:
       return {
         ...state,
         error: action.payload,
+        stop: true,
         loading: false,
+        countCatched: state.countCatched + 1,
       };
     default:
       return state;
